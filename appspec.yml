@@ -3,7 +3,7 @@ version: 0.0
 os: linux 
 files:
   - source: /
-    destination: /home/ubuntu/my-app1
+    destination: /home/ubuntu/npp-qna-server
 hooks:
   BeforeInstall:
     - location: scripts/before_install.sh
