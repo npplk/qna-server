@@ -1,21 +1,21 @@
-const Question = require('../models/question');
+const Discussion = require('../models/discussion');
 const User = require('../models/user');
 const { body, validationResult } = require('express-validator');
 
-exports.loadQuestion = async (req, res, next, id) => {
+exports.loadDiscussion = async (req, res, next, id) => {
   try {
-    const question = await Question.findById(id);
-    if (!question) return res.status(404).json({ message: 'Question not found.' });
-    req.question = question;
+    const discussion = await Discussion.findById(id);
+    if (!discussion) return res.status(404).json({ message: 'Discussion not found.' });
+    req.discussion = discussion;
   } catch (error) {
     if (error.name === 'CastError')
-      return res.status(400).json({ message: 'Invalid question id.' });
+      return res.status(400).json({ message: 'Invalid discussion id.' });
     return next(error);
   }
   next();
 };
 
-exports.createQuestion = async (req, res, next) => {
+exports.createDiscussion = async (req, res, next) => {
   const result = validationResult(req);
   if (!result.isEmpty()) {
     const errors = result.array({ onlyFirstError: true });
@@ -24,68 +24,68 @@ exports.createQuestion = async (req, res, next) => {
   try {
     const { title, tags, text } = req.body;
     const author = req.user.id;
-    const question = await Question.create({
+    const discussion = await Discussion.create({
       title,
       author,
       tags,
       text
     });
-    res.status(201).json(question);
+    res.status(201).json(discussion);
   } catch (error) {
     next(error);
   }
 };
 
-exports.showQuestion = async (req, res, next) => {
+exports.showDiscussion = async (req, res, next) => {
   try {
-    const { id } = req.question;
-    const question = await Question.findByIdAndUpdate(
+    const { id } = req.discussion;
+    const discussion = await Discussion.findByIdAndUpdate(
       id,
       { $inc: { views: 1 } },
       { new: true }
     ).populate('answers');
-    res.json(question);
+    res.json(discussion);
   } catch (error) {
     next(error);
   }
 };
 
-exports.listQuestions = async (req, res, next) => {
+exports.listDiscussions = async (req, res, next) => {
   try {
     const { sortType = '-score' } = req.body;
-    const questions = await Question.find().sort(sortType);
-    res.json(questions);
+    const discussions = await Discussion.find().sort(sortType);
+    res.json(discussions);
   } catch (error) {
     next(error);
   }
 };
 
-exports.listQuestionsByTags = async (req, res, next) => {
+exports.listDiscussionsByTags = async (req, res, next) => {
   try {
     const { sortType = '-score', tags } = req.params;
-    const questions = await Question.find({ tags: { $all: tags } }).sort(sortType);
-    res.json(questions);
+    const discussions = await Discussion.find({ tags: { $all: tags } }).sort(sortType);
+    res.json(discussions);
   } catch (error) {
     next(error);
   }
 };
 
-exports.listQuestionsByUser = async (req, res, next) => {
+exports.listDiscussionsByUser = async (req, res, next) => {
   try {
     const { username } = req.params;
     const { sortType = '-created' } = req.body;
     const author = await User.findOne({ username });
-    const questions = await Question.find({ author: author.id }).sort(sortType).limit(10);
-    res.json(questions);
+    const discussions = await Discussion.find({ author: author.id }).sort(sortType).limit(10);
+    res.json(discussions);
   } catch (error) {
     next(error);
   }
 };
 
-exports.removeQuestion = async (req, res, next) => {
+exports.removeDiscussion = async (req, res, next) => {
   try {
-    await req.question.remove();
-    res.json({ message: 'Your question successfully deleted.' });
+    await req.discussion.remove();
+    res.json({ message: 'Your discussion successfully deleted.' });
   } catch (error) {
     next(error);
   }
@@ -93,7 +93,7 @@ exports.removeQuestion = async (req, res, next) => {
 
 exports.loadComment = async (req, res, next, id) => {
   try {
-    const comment = await req.question.comments.id(id);
+    const comment = await req.discussion.comments.id(id);
     if (!comment) return res.status(404).json({ message: 'Comment not found.' });
     req.comment = comment;
   } catch (error) {
@@ -103,7 +103,7 @@ exports.loadComment = async (req, res, next, id) => {
   next();
 };
 
-exports.questionValidate = [
+exports.discussionValidate = [
   body('title')
     .exists()
     .trim()
