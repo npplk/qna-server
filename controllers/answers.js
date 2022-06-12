@@ -1,6 +1,6 @@
 const { body, validationResult } = require('express-validator');
 
-exports.loadAnswers = async (req, res, next, id) => {
+exports.loadAnswer = async (req, res, next, id) => {
   try {
     const answer = await req.question.answers.id(id);
     if (!answer) return res.status(404).json({ message: 'Answer not found.' });
@@ -23,7 +23,9 @@ exports.createAnswer = async (req, res, next) => {
     const { id } = req.user;
     const { text } = req.body;
 
-    const question = await req.question.addAnswer(id, text);
+    let thread = req.question || req.discussion;
+
+    const question = await thread.addAnswer(id, text);
 
     res.status(201).json(question);
   } catch (error) {

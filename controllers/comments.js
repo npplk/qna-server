@@ -1,6 +1,6 @@
 const { body, validationResult } = require('express-validator');
 
-exports.loadComments = async (req, res, next, id) => {
+exports.loadComment = async (req, res, next, id) => {
   try {
     let comment;
 
