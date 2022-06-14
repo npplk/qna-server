@@ -27,6 +27,15 @@ const {
   removeDiscussion
 } = require('./controllers/discussions');
 const {
+  loadFaq,
+  faqValidate,
+  createFaq,
+  showFaq,
+  listFaqs,
+  listFaqsByTags,
+  removeFaq
+} = require('./controllers/faqs');
+const {
   loadAnswer,
   answerValidate,
   createAnswer,
@@ -38,6 +47,8 @@ const { loadComment, validate, createComment, removeComment } = require('./contr
 
 const requireAuth = require('./middlewares/requireAuth');
 const questionAuth = require('./middlewares/questionAuth');
+const discussionAuth = require('./middlewares/discussionAuth');
+const faqAuth = require('./middlewares/faqAuth');
 const commentAuth = require('./middlewares/commentAuth');
 const answerAuth = require('./middlewares/answerAuth');
 
@@ -68,7 +79,15 @@ router.get('/discussion/:discussion', showDiscussion);
 router.get('/discussions', listDiscussions);
 router.get('/discussions/:tags', listDiscussionsByTags);
 router.get('/discussions/user/:username', listDiscussionsByUser);
-router.delete('/discussion/:discussion', [requireAuth, questionAuth], removeDiscussion);
+router.delete('/discussion/:discussion', [requireAuth, discussionAuth], removeDiscussion);
+
+//discussions
+router.param('faq', loadFaq);
+router.post('/faq', [requireAuth, faqValidate], createFaq); // TODO: check admin auth
+router.get('/faq/:faq', showFaq);
+router.get('/faqs', listFaqs);
+router.get('/faqs/:tags', listFaqsByTags);
+router.delete('/faq/:faq', [requireAuth, faqAuth], removeFaq); // TODO: check admin auth
 
 //tags
 router.get('/tags/populertags', listPopulerTags);
