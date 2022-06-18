@@ -12,11 +12,13 @@ exports.signup = async (req, res) => {
   }
 
   try {
-    const { username } = req.body;
+    const { displayname, email, username } = req.body;
 
     const hashedPassword = await hashPassword(req.body.password);
 
     const userData = {
+      displayname,
+      email,
       username: username.toLowerCase(),
       password: hashedPassword
     };
@@ -39,8 +41,10 @@ exports.signup = async (req, res) => {
       const decodedToken = jwtDecode(token);
       const expiresAt = decodedToken.exp;
 
-      const { username, role, id, created, profilePhoto } = savedUser;
+      const { displayname, email, username, role, id, created, profilePhoto } = savedUser;
       const userInfo = {
+        displayname,
+        email,
         username,
         role,
         id,
@@ -90,8 +94,8 @@ exports.authenticate = async (req, res) => {
       const token = createToken(user);
       const decodedToken = jwtDecode(token);
       const expiresAt = decodedToken.exp;
-      const { username, role, id, created, profilePhoto } = user;
-      const userInfo = { username, role, id, created, profilePhoto };
+      const { displayname, email, username, role, id, created, profilePhoto } = user;
+      const userInfo = { displayname, email, username, role, id, created, profilePhoto };
 
       res.json({
         message: 'Authentication successful!',
