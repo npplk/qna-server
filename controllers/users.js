@@ -87,9 +87,8 @@ exports.authenticate = async (req, res) => {
         message: 'Wrong username or password.'
       });
     }
-
+    
     const passwordValid = await verifyPassword(password, user.password);
-
     if (passwordValid) {
       const token = createToken(user);
       const decodedToken = jwtDecode(token);

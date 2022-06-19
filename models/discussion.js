@@ -83,7 +83,7 @@ discussionSchema.methods = {
 discussionSchema.pre(/^find/, function () {
   this.populate('author')
     .populate('comments.author', '-role')
-    .populate('answers.author', '-role')
+    .populate('answers.author') // removed -role
     .populate('answers.comments.author', '-role');
 });
 
