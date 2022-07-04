@@ -1,4 +1,6 @@
 #!/bin/bash
+
 # Stop all servers and start the server
-forever stopall
-forever start /home/ubuntu/npp-qna-server/app.js
+cd /home/ubuntu/npp-qna-server
+pm2 stop npp-qna-server
+pm2 start npm --name "npp-qna-server" -- start
