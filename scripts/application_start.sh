@@ -2,7 +2,10 @@
 
 # Stop all servers and start the server
 cd /home/ubuntu/npp-qna-server
-echo "$USER"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads 
+nvm -v
 node -v
 npm -v
 pm2 stop npp-qna-server
