@@ -2,7 +2,7 @@
 
 # Stop all servers and start the server
 cd /home/ubuntu/npp-qna-server
-echo $whoami
+echo "$USER"
 node -v
 npm -v
 pm2 stop npp-qna-server
