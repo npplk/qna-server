@@ -93,7 +93,6 @@ questionSchema.pre('save', function (next) {
 });
 
 questionSchema.post('save', function (doc, next) {
-  if (this.wasNew) this.vote(this.author._id, 1);
   doc
     .populate('author')
     .populate('answers.author', '-role') 
