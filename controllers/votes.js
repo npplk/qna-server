@@ -2,12 +2,13 @@ exports.upvote = async (req, res) => {
   const { id } = req.user;
 
   if (req.answer) {
+    console.log(req.answer.vote);
     req.answer.vote(id, 1);
-    const question = await req.question.save();
-    return res.json(question);
+    const thread = await req.thread.save();
+    return res.json(thread);
   }
-  const question = await req.question.vote(id, 1);
-  return res.json(question);
+  const thread = await req.thread.vote(id, 1);
+  return res.json(thread);
 };
 
 exports.downvote = async (req, res) => {
@@ -15,11 +16,11 @@ exports.downvote = async (req, res) => {
 
   if (req.answer) {
     req.answer.vote(id, -1);
-    const question = await req.question.save();
-    return res.json(question);
+    const thread = await req.thread.save();
+    return res.json(thread);
   }
-  const question = await req.question.vote(id, -1);
-  return res.json(question);
+  const thread = await req.thread.vote(id, -1);
+  return res.json(thread);
 };
 
 exports.unvote = async (req, res) => {
@@ -27,9 +28,9 @@ exports.unvote = async (req, res) => {
 
   if (req.answer) {
     req.answer.vote(id, 0);
-    const question = await req.question.save();
-    return res.json(question);
+    const thread = await req.thread.save();
+    return res.json(thread);
   }
-  const question = await req.question.vote(id, 0);
-  return res.json(question);
+  const thread = await req.thread.vote(id, 0);
+  return res.json(thread);
 };

@@ -5,7 +5,7 @@ exports.loadFaq = async (req, res, next, id) => {
   try {
     const faq = await Faq.findById(id);
     if (!faq) return res.status(404).json({ message: 'Faq not found.' });
-    req.faq = faq;
+    req.thread = faq;
   } catch (error) {
     if (error.name === 'CastError')
       return res.status(400).json({ message: 'Invalid faq id.' });
@@ -38,7 +38,7 @@ exports.createFaq = async (req, res, next) => {
 
 exports.showFaq = async (req, res, next) => {
   try {
-    const { id } = req.faq;
+    const { id } = req.thread;
     const faq = await Faq.findByIdAndUpdate(
       id,
       { $inc: { views: 1 } },
@@ -72,7 +72,7 @@ exports.listFaqsByTags = async (req, res, next) => {
 
 exports.removeFaq = async (req, res, next) => {
   try {
-    await req.faq.remove();
+    await req.thread.remove();
     res.json({ message: 'Your faq successfully deleted.' });
   } catch (error) {
     next(error);

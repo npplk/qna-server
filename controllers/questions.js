@@ -6,7 +6,7 @@ exports.loadQuestion = async (req, res, next, id) => {
   try {
     const question = await Question.findById(id);
     if (!question) return res.status(404).json({ message: 'Question not found.' });
-    req.question = question;
+    req.thread = question;
   } catch (error) {
     if (error.name === 'CastError')
       return res.status(400).json({ message: 'Invalid question id.' });
@@ -38,7 +38,7 @@ exports.createQuestion = async (req, res, next) => {
 
 exports.showQuestion = async (req, res, next) => {
   try {
-    const { id } = req.question;
+    const { id } = req.thread;
     const question = await Question.findByIdAndUpdate(
       id,
       { $inc: { views: 1 } },
@@ -84,7 +84,7 @@ exports.listQuestionsByUser = async (req, res, next) => {
 
 exports.removeQuestion = async (req, res, next) => {
   try {
-    await req.question.remove();
+    await req.thread.remove();
     res.json({ message: 'Your question successfully deleted.' });
   } catch (error) {
     next(error);

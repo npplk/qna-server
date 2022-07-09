@@ -51,6 +51,7 @@ const discussionAuth = require('./middlewares/discussionAuth');
 const faqAuth = require('./middlewares/faqAuth');
 const commentAuth = require('./middlewares/commentAuth');
 const answerAuth = require('./middlewares/answerAuth');
+const { loadThread } = require('./controllers/thread');
 
 const router = require('express').Router();
 
@@ -81,7 +82,7 @@ router.get('/discussions/:tags', listDiscussionsByTags);
 router.get('/discussions/user/:username', listDiscussionsByUser);
 router.delete('/discussion/:discussion', [requireAuth, discussionAuth], removeDiscussion);
 
-//discussions
+//faq
 router.param('faq', loadFaq);
 router.post('/faq', [requireAuth, faqValidate], createFaq); // TODO: check admin auth
 router.get('/faq/:faq', showFaq);
@@ -94,6 +95,9 @@ router.get('/tags/populertags', listPopulerTags);
 router.get('/tags/:tag', searchTags);
 router.get('/tags', listTags);
 
+//thread
+router.param('thread', loadThread);
+
 //answers/responses
 router.param('answer', loadAnswer);
 router.post('/answer/:question', [requireAuth, answerValidate], createAnswer);
@@ -102,9 +106,9 @@ router.post('/response/:discussion', [requireAuth, answerValidate], createAnswer
 router.delete('/response/:discussion/:answer', [requireAuth, answerAuth], removeAnswer);
 
 //votes
-router.get('/votes/upvote/:question/:answer?', requireAuth, upvote);
-router.get('/votes/downvote/:question/:answer?', requireAuth, downvote);
-router.get('/votes/unvote/:question/:answer?', requireAuth, unvote);
+router.get('/votes/upvote/:thread/:threadId/:answer?', requireAuth, upvote);
+router.get('/votes/downvote/:thread/:threadId/:answer?', requireAuth, downvote);
+router.get('/votes/unvote/:thread/:threadId/:answer?', requireAuth, unvote);
 
 //comments
 router.param('comment', loadComment);

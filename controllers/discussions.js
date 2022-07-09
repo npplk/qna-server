@@ -6,7 +6,7 @@ exports.loadDiscussion = async (req, res, next, id) => {
   try {
     const discussion = await Discussion.findById(id);
     if (!discussion) return res.status(404).json({ message: 'Discussion not found.' });
-    req.discussion = discussion;
+    req.thread = discussion;
   } catch (error) {
     if (error.name === 'CastError')
       return res.status(400).json({ message: 'Invalid discussion id.' });
@@ -38,7 +38,7 @@ exports.createDiscussion = async (req, res, next) => {
 
 exports.showDiscussion = async (req, res, next) => {
   try {
-    const { id } = req.discussion;
+    const { id } = req.thread;
     const discussion = await Discussion.findByIdAndUpdate(
       id,
       { $inc: { views: 1 } },
@@ -84,7 +84,7 @@ exports.listDiscussionsByUser = async (req, res, next) => {
 
 exports.removeDiscussion = async (req, res, next) => {
   try {
-    await req.discussion.remove();
+    await req.thread.remove();
     res.json({ message: 'Your discussion successfully deleted.' });
   } catch (error) {
     next(error);
