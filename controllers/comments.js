@@ -7,7 +7,7 @@ exports.loadComment = async (req, res, next, id) => {
     if (req.answer) {
       comment = await req.answer.comments.id(id);
     } else {
-      comment = await req.question.comments.id(id);
+      comment = await req.thread.comments.id(id);
     }
 
     if (!comment) return res.status(404).json({ message: 'Comment not found.' });
@@ -33,12 +33,12 @@ exports.createComment = async (req, res, next) => {
 
     if (req.params.answer) {
       req.answer.addComment(id, comment);
-      const question = await req.question.save();
-      return res.status(201).json(question);
+      const thread = await req.thread.save();
+      return res.status(201).json(thread);
     }
 
-    const question = await req.question.addComment(id, comment);
-    return res.status(201).json(question);
+    const thread = await req.thread.addComment(id, comment);
+    return res.status(201).json(thread);
   } catch (error) {
     next(error);
   }
@@ -50,12 +50,12 @@ exports.removeComment = async (req, res, next) => {
   try {
     if (req.params.answer) {
       req.answer.removeComment(comment);
-      const question = await req.question.save();
-      return res.json(question);
+      const thread = await req.thread.save();
+      return res.json(thread);
     }
 
-    const question = await req.question.removeComment(comment);
-    return res.json(question);
+    const thread = await req.thread.removeComment(comment);
+    return res.json(thread);
   } catch (error) {
     next(error);
   }

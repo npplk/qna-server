@@ -51,7 +51,8 @@ const discussionAuth = require('./middlewares/discussionAuth');
 const faqAuth = require('./middlewares/faqAuth');
 const commentAuth = require('./middlewares/commentAuth');
 const answerAuth = require('./middlewares/answerAuth');
-const { loadThread } = require('./controllers/thread');
+const { loadThread, removeThread } = require('./controllers/thread');
+const threadAuth = require('./middlewares/threadAuth');
 
 const router = require('express').Router();
 
@@ -97,13 +98,12 @@ router.get('/tags', listTags);
 
 //thread
 router.param('thread', loadThread);
+router.delete('/:thread/:threadId', [requireAuth, threadAuth], removeThread);
 
-//answers/responses
+//answers
 router.param('answer', loadAnswer);
-router.post('/answer/:question', [requireAuth, answerValidate], createAnswer);
-router.delete('/answer/:question/:answer', [requireAuth, answerAuth], removeAnswer);
-router.post('/response/:discussion', [requireAuth, answerValidate], createAnswer);
-router.delete('/response/:discussion/:answer', [requireAuth, answerAuth], removeAnswer);
+router.post('/answer/:thread/:threadId', [requireAuth, answerValidate], createAnswer);
+router.delete('/answer/:thread/:threadId/:answer', [requireAuth, answerAuth], removeAnswer);
 
 //votes
 router.get('/votes/upvote/:thread/:threadId/:answer?', requireAuth, upvote);
@@ -112,9 +112,9 @@ router.get('/votes/unvote/:thread/:threadId/:answer?', requireAuth, unvote);
 
 //comments
 router.param('comment', loadComment);
-router.post('/comment/:question/:answer?', [requireAuth, validate], createComment);
-router.delete('/comment/:question/:comment', [requireAuth, commentAuth], removeComment);
-router.delete('/comment/:question/:answer/:comment', [requireAuth, commentAuth], removeComment);
+router.post('/comment/:thread/:threadId/:answer?', [requireAuth, validate], createComment);
+router.delete('/comment/:thread/:threadId/:comment', [requireAuth, commentAuth], removeComment);
+router.delete('/comment/:thread/:threadId/:answer/:comment', [requireAuth, commentAuth], removeComment);
 
 module.exports = (app) => {
   app.use('/api', router);
