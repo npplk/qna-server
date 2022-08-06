@@ -85,11 +85,11 @@ router.delete('/discussion/:discussion', [requireAuth, discussionAuth], removeDi
 
 //faq
 router.param('faq', loadFaq);
-router.post('/faq', [requireAuth, faqValidate], createFaq); // TODO: check admin auth
+router.post('/faq', [requireAuth, faqValidate, faqAuth], createFaq);
 router.get('/faq/:faq', showFaq);
 router.get('/faqs', listFaqs);
 router.get('/faqs/:tags', listFaqsByTags);
-router.delete('/faq/:faq', [requireAuth, faqAuth], removeFaq); // TODO: check admin auth
+router.delete('/faq/:faq', [requireAuth, faqAuth], removeFaq);
 
 //tags
 router.get('/tags/populertags', listPopulerTags);
