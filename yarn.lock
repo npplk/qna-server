@@ -3158,6 +3158,11 @@
   "resolved" "https://registry.npmjs.org/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz"
   "version" "1.0.2"
 
+"mongoose-paginate-v2@^1.7.1":
+  "integrity" "sha512-J8DJw3zRXcXOKoZv+RvO9tt5HotRnbo2iCR3lke+TtsQsYwQvbY3EgUkPqZXw6qCX2IByvXrW5SGNdAB0od/Cw=="
+  "resolved" "https://registry.npmjs.org/mongoose-paginate-v2/-/mongoose-paginate-v2-1.7.1.tgz"
+  "version" "1.7.1"
+
 "mongoose@*", "mongoose@^5.9.16":
   "integrity" "sha512-j+BlQjjxgZg0iWn42kLeZTB91OejcxWpY2Z50bsZTiKJ7HHcEtcY21Godw496GMkBqJMTzmW7G/kZ04mW+Cb7Q=="
   "resolved" "https://registry.npmjs.org/mongoose/-/mongoose-5.13.14.tgz"

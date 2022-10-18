@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 const Schema = mongoose.Schema;
 
 const voteSchema = require('./vote');
@@ -101,5 +102,7 @@ questionSchema.post('save', function (doc, next) {
     .execPopulate()
     .then(() => next());
 });
+
+questionSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Question', questionSchema);
