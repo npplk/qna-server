@@ -52,8 +52,13 @@ exports.showDiscussion = async (req, res, next) => {
 
 exports.listDiscussions = async (req, res, next) => {
   try {
-    const { sortType = '-score' } = req.body;
-    const discussions = await Discussion.find().sort(sortType);
+    const { page = 1, sort = '-created' } = req.query;
+    const discussions = await Discussion.paginate({}, { 
+      page,
+      sort,
+      limit: 10,
+    });
+
     res.json(discussions);
   } catch (error) {
     next(error);
@@ -62,8 +67,17 @@ exports.listDiscussions = async (req, res, next) => {
 
 exports.listDiscussionsByTags = async (req, res, next) => {
   try {
-    const { sortType = '-score', tags } = req.params;
-    const discussions = await Discussion.find({ tags: { $all: tags } }).sort(sortType);
+    const { tags } = req.params;
+    
+    const { page = 1, sort = '-created' } = req.query;
+    const discussions = await Discussion.paginate({
+      tags: { $all: tags }
+    }, { 
+      page,
+      sort,
+      limit: 10,
+    });
+
     res.json(discussions);
   } catch (error) {
     next(error);

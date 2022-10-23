@@ -52,8 +52,13 @@ exports.showFaq = async (req, res, next) => {
 
 exports.listFaqs = async (req, res, next) => {
   try {
-    const { sortType = '-score' } = req.body;
-    const faqs = await Faq.find().sort(sortType);
+    const { page = 1, sort = '-created' } = req.query;
+    const faqs = await Faq.paginate({}, { 
+      page,
+      sort,
+      limit: 10,
+    });
+
     res.json(faqs);
   } catch (error) {
     next(error);
@@ -62,8 +67,17 @@ exports.listFaqs = async (req, res, next) => {
 
 exports.listFaqsByTags = async (req, res, next) => {
   try {
-    const { sortType = '-score', tags } = req.params;
-    const faqs = await Faq.find({ tags: { $all: tags } }).sort(sortType);
+    const { tags } = req.params;
+    
+    const { page = 1, sort = '-created' } = req.query;
+    const faqs = await Faq.paginate({
+      tags: { $all: tags }
+    }, { 
+      page,
+      sort,
+      limit: 10,
+    });
+
     res.json(faqs);
   } catch (error) {
     next(error);
