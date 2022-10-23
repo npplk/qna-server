@@ -92,9 +92,9 @@ router.get('/faqs/:tags', listFaqsByTags);
 router.delete('/faq/:faq', [requireAuth, faqAuth], removeFaq);
 
 //tags
-router.get('/tags/populertags', listPopulerTags);
-router.get('/tags/:tag', searchTags);
-router.get('/tags', listTags);
+router.get('/tags/:threadType/populertags', listPopulerTags);
+router.get('/tags/:tag', searchTags); // only for questions at the moment
+router.get('/tags/:threadType', listTags);
 
 //thread
 router.param('thread', loadThread);

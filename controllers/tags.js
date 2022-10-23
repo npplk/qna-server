@@ -1,8 +1,10 @@
 const Question = require('../models/question');
+const { ThreadTypes } = require('../utils/util');
 
 exports.listPopulerTags = async (req, res, next) => {
   try {
-    const tags = await Question.aggregate([
+    const { threadType } = req.params;
+    const tags = await ThreadTypes[threadType].aggregate([
       { $project: { tags: 1 } },
       { $unwind: '$tags' },
       { $group: { _id: '$tags', count: { $sum: 1 } } },
@@ -17,7 +19,8 @@ exports.listPopulerTags = async (req, res, next) => {
 
 exports.listTags = async (req, res, next) => {
   try {
-    const tags = await Question.aggregate([
+    const { threadType } = req.params;
+    const tags = await ThreadTypes[threadType].aggregate([
       { $project: { tags: 1 } },
       { $unwind: '$tags' },
       { $group: { _id: '$tags', count: { $sum: 1 } } },

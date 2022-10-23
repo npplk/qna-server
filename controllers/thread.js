@@ -1,12 +1,4 @@
-const Question = require('../models/question');
-const Discussion = require('../models/discussion');
-const Faq = require('../models/faq');
-
-const ThreadTypes = {
-    questions: Question,
-    discussions: Discussion,
-    faqs: Faq
-}
+const { ThreadTypes } = require('../utils/util');
 
 exports.loadThread = async (req, res, next, type) => {
   try {
