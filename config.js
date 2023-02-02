@@ -11,7 +11,7 @@ module.exports = {
     }
   },
   jwt: {
-    secret: process.env.JWT_SECRET || 'development_secret',
+    secret: process.env.JWT_SECRET || 'savikalpa_development',
     expiry: '7d'
   }
 };
