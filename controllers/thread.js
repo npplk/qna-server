@@ -4,6 +4,7 @@ exports.loadThread = async (req, res, next, type) => {
   try {
     const thread = await ThreadTypes[type].findById(req.params.threadId);
     if (!thread) return res.status(404).json({ message: 'Thread not found.' });
+    req.threadType = type;
     req.thread = thread;
   } catch (error) {
     if (error.name === 'CastError')
