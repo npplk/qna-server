@@ -141,6 +141,20 @@ exports.find = async (req, res, next) => {
 };
 
 exports.validateUser = [
+  body('displayname')
+    .exists()
+    .trim()
+    .withMessage('is required')
+
+    .notEmpty()
+    .withMessage('cannot be blank')
+
+    .isLength({ min: 4 })
+    .withMessage('must be at least 4 characters long')
+
+    .isLength({ max: 30 })
+    .withMessage('must be at most 30 characters long'),
+
   body('username')
     .exists()
     .trim()
