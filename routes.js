@@ -50,7 +50,7 @@ const questionAuth = require('./middlewares/questionAuth');
 const discussionAuth = require('./middlewares/discussionAuth');
 const faqAuth = require('./middlewares/faqAuth');
 const commentAuth = require('./middlewares/commentAuth');
-const answerAuth = require('./middlewares/answerAuth');
+const { answerDeleteAuth, answerPostAuth } = require('./middlewares/answerAuth');
 const { loadThread, removeThread } = require('./controllers/thread');
 const threadAuth = require('./middlewares/threadAuth');
 
@@ -102,8 +102,8 @@ router.delete('/:thread/:threadId', [requireAuth, threadAuth], removeThread);
 
 //answers
 router.param('answer', loadAnswer);
-router.post('/answer/:thread/:threadId', [requireAuth, answerValidate], createAnswer);
-router.delete('/answer/:thread/:threadId/:answer', [requireAuth, answerAuth], removeAnswer);
+router.post('/answer/:thread/:threadId', [requireAuth, answerValidate, answerPostAuth], createAnswer);
+router.delete('/answer/:thread/:threadId/:answer', [requireAuth, answerDeleteAuth], removeAnswer);
 
 //votes
 router.get('/votes/upvote/:thread/:threadId/:answer?', requireAuth, upvote);
