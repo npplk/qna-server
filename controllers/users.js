@@ -140,7 +140,7 @@ exports.find = async (req, res, next) => {
   }
 };
 
-exports.validateUser = [
+exports.validateSignup = [
   body('displayname')
     .exists()
     .trim()
@@ -165,6 +165,36 @@ exports.validateUser = [
 
     .isLength({ min: 4 })
     .withMessage('must be at least 4 characters long')
+
+    .isLength({ max: 16 })
+    .withMessage('must be at most 16 characters long')
+
+    .matches(/^[a-zA-Z0-9_-]+$/)
+    .withMessage('contains invalid characters'),
+
+  body('password')
+    .exists()
+    .trim()
+    .withMessage('is required')
+
+    .notEmpty()
+    .withMessage('cannot be blank')
+
+    .isLength({ min: 6 })
+    .withMessage('must be at least 6 characters long')
+
+    .isLength({ max: 50 })
+    .withMessage('must be at most 50 characters long')
+];
+
+exports.validateUser = [
+  body('username')
+    .exists()
+    .trim()
+    .withMessage('is required')
+
+    .notEmpty()
+    .withMessage('cannot be blank')
 
     .isLength({ max: 16 })
     .withMessage('must be at most 16 characters long')
