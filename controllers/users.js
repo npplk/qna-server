@@ -149,6 +149,9 @@ exports.validateUser = [
     .notEmpty()
     .withMessage('cannot be blank')
 
+    .isLength({ min: 4 })
+    .withMessage('must be at least 4 characters long')
+
     .isLength({ max: 16 })
     .withMessage('must be at most 16 characters long')
 
