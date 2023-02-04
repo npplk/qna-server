@@ -19,6 +19,7 @@ exports.signup = async (req, res) => {
     const userData = {
       displayname,
       username: username.toLowerCase(),
+      email: username.email,
       password: hashedPassword
     };
 
