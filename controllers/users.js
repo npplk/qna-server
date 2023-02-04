@@ -57,11 +57,13 @@ exports.signup = async (req, res) => {
         expiresAt
       });
     } else {
+      console.error('User not saved : ', error);
       return res.status(400).json({
         message: 'There was a problem creating your account.'
       });
     }
   } catch (error) {
+    console.error('Error creating user : ', error);
     return res.status(400).json({
       message: 'There was a problem creating your account.'
     });
