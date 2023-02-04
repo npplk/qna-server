@@ -1,4 +1,5 @@
 const {
+  validateSignup,
   validateUser,
   signup,
   authenticate,
@@ -57,7 +58,7 @@ const threadAuth = require('./middlewares/threadAuth');
 const router = require('express').Router();
 
 //authentication
-router.post('/signup', validateUser, signup);
+router.post('/signup', validateSignup, signup);
 router.post('/authenticate', validateUser, authenticate);
 
 //users

@@ -46,7 +46,7 @@ exports.signup = async (req, res) => {
       const decodedToken = jwtDecode(token);
       const expiresAt = decodedToken.exp;
 
-      const { displayname, username, role, id, created, profilePhoto } = savedUser;
+      const { displayname, email, username, role, id, created, profilePhoto } = savedUser;
       const userInfo = {
         displayname,
         username,
@@ -99,8 +99,8 @@ exports.authenticate = async (req, res) => {
       const token = createToken(user);
       const decodedToken = jwtDecode(token);
       const expiresAt = decodedToken.exp;
-      const { displayname, username, role, id, created, profilePhoto } = user;
-      const userInfo = { displayname, username, role, id, created, profilePhoto };
+      const { displayname, email, username, role, id, created, profilePhoto } = user;
+      const userInfo = { displayname, email, username, role, id, created, profilePhoto };
 
       res.json({
         message: 'Authentication successful!',
@@ -147,6 +147,60 @@ exports.find = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.validateSignup = [
+  body('displayname')
+    .exists()
+    .trim()
+    .withMessage('is required')
+
+    .notEmpty()
+    .withMessage('cannot be blank')
+
+    .isLength({ min: 4 })
+    .withMessage('must be at least 4 characters long')
+
+    .isLength({ max: 30 })
+    .withMessage('must be at most 30 characters long'),
+  
+  body('email')
+    .exists()
+    .trim()
+    .withMessage('is required')
+    .notEmpty()
+    .withMessage('cannot be blank'),
+
+  body('username')
+    .exists()
+    .trim()
+    .withMessage('is required')
+
+    .notEmpty()
+    .withMessage('cannot be blank')
+
+    .isLength({ min: 4 })
+    .withMessage('must be at least 4 characters long')
+
+    .isLength({ max: 16 })
+    .withMessage('must be at most 16 characters long')
+
+    .matches(/^[a-zA-Z0-9_-]+$/)
+    .withMessage('contains invalid characters'),
+
+  body('password')
+    .exists()
+    .trim()
+    .withMessage('is required')
+
+    .notEmpty()
+    .withMessage('cannot be blank')
+
+    .isLength({ min: 6 })
+    .withMessage('must be at least 6 characters long')
+
+    .isLength({ max: 50 })
+    .withMessage('must be at most 50 characters long')
+];
 
 exports.validateUser = [
   body('username')
