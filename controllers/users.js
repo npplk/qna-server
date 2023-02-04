@@ -12,7 +12,7 @@ exports.signup = async (req, res) => {
   }
 
   try {
-    const { displayname, username } = req.body;
+    const { displayname, email, username } = req.body;
 
     const hashedPassword = await hashPassword(req.body.password);
 
@@ -40,7 +40,7 @@ exports.signup = async (req, res) => {
       const decodedToken = jwtDecode(token);
       const expiresAt = decodedToken.exp;
 
-      const { displayname, username, role, id, created, profilePhoto } = savedUser;
+      const { displayname, email, username, role, id, created, profilePhoto } = savedUser;
       const userInfo = {
         displayname,
         username,
@@ -93,8 +93,8 @@ exports.authenticate = async (req, res) => {
       const token = createToken(user);
       const decodedToken = jwtDecode(token);
       const expiresAt = decodedToken.exp;
-      const { displayname, username, role, id, created, profilePhoto } = user;
-      const userInfo = { displayname, username, role, id, created, profilePhoto };
+      const { displayname, email, username, role, id, created, profilePhoto } = user;
+      const userInfo = { displayname, email, username, role, id, created, profilePhoto };
 
       res.json({
         message: 'Authentication successful!',
@@ -156,6 +156,13 @@ exports.validateSignup = [
 
     .isLength({ max: 30 })
     .withMessage('must be at most 30 characters long'),
+  
+  body('email')
+    .exists()
+    .trim()
+    .withMessage('is required')
+    .notEmpty()
+    .withMessage('cannot be blank'),
 
   body('username')
     .exists()
