@@ -22,11 +22,14 @@ exports.signup = async (req, res) => {
       password: hashedPassword
     };
 
+    console.log('User data: ', userData);
+
     const existingUsername = await User.findOne({
       username: userData.username
     });
 
     if (existingUsername) {
+      console.log('User exists', userData.username);
       return res.status(400).json({
         message: 'Username already exists.'
       });
@@ -34,6 +37,8 @@ exports.signup = async (req, res) => {
 
     const newUser = new User(userData);
     const savedUser = await newUser.save();
+
+    console.log('User saved : ', savedUser);
 
     if (savedUser) {
       const token = createToken(savedUser);
