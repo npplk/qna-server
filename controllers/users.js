@@ -12,14 +12,14 @@ exports.signup = async (req, res) => {
   }
 
   try {
-    const { displayname, username } = req.body;
+    const { displayname, username, email } = req.body;
 
     const hashedPassword = await hashPassword(req.body.password);
 
     const userData = {
       displayname,
       username: username.toLowerCase(),
-      email: username.email,
+      email: email,
       password: hashedPassword
     };
 
