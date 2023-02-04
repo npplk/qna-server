@@ -18,8 +18,8 @@ exports.signup = async (req, res) => {
 
     const userData = {
       displayname,
+      email,
       username: username.toLowerCase(),
-      email: email,
       password: hashedPassword
     };
 
@@ -49,6 +49,7 @@ exports.signup = async (req, res) => {
       const { displayname, email, username, role, id, created, profilePhoto } = savedUser;
       const userInfo = {
         displayname,
+        email,
         username,
         role,
         id,
