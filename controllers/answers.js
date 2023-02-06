@@ -31,6 +31,25 @@ exports.createAnswer = async (req, res, next) => {
   }
 };
 
+exports.editAnswer = async (req, res, next) => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    const errors = result.array({ onlyFirstError: true });
+    return res.status(422).json({ errors });
+  }
+
+  try {
+    const { text } = req.body;
+    const { answer } = req.params;
+
+    const thread = await req.thread.editAnswer(answer, text);
+
+    res.status(201).json(thread);
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.removeAnswer = async (req, res, next) => {
   try {
     const { answer } = req.params;

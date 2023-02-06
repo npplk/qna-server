@@ -40,7 +40,8 @@ const {
   loadAnswer,
   answerValidate,
   createAnswer,
-  removeAnswer
+  removeAnswer,
+  editAnswer
 } = require('./controllers/answers');
 const { listPopulerTags, searchTags, listTags } = require('./controllers/tags');
 const { upvote, downvote, unvote } = require('./controllers/votes');
@@ -51,7 +52,7 @@ const questionAuth = require('./middlewares/questionAuth');
 const discussionAuth = require('./middlewares/discussionAuth');
 const faqAuth = require('./middlewares/faqAuth');
 const commentAuth = require('./middlewares/commentAuth');
-const { answerDeleteAuth, answerPostAuth } = require('./middlewares/answerAuth');
+const { answerDeleteAuth, answerPostAuth, answerEditAuth } = require('./middlewares/answerAuth');
 const { loadThread, removeThread } = require('./controllers/thread');
 const threadAuth = require('./middlewares/threadAuth');
 
@@ -104,6 +105,7 @@ router.delete('/:thread/:threadId', [requireAuth, threadAuth], removeThread);
 //answers
 router.param('answer', loadAnswer);
 router.post('/answer/:thread/:threadId', [requireAuth, answerValidate, answerPostAuth], createAnswer);
+router.post('/answer/:thread/:threadId/:answer/edit', [requireAuth, answerValidate, answerPostAuth, answerEditAuth], editAnswer);
 router.delete('/answer/:thread/:threadId/:answer', [requireAuth, answerDeleteAuth], removeAnswer);
 
 //votes
