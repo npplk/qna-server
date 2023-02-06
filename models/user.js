@@ -21,6 +21,7 @@ userModel.options.toJSON.transform = (doc, ret) => {
   const obj = { ...ret };
   delete obj._id;
   delete obj.__v;
+  delete obj.email;
   delete obj.password;
   return obj;
 };
