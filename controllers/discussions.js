@@ -36,6 +36,26 @@ exports.createDiscussion = async (req, res, next) => {
   }
 };
 
+exports.editDiscussion = async (req, res, next) => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    const errors = result.array({ onlyFirstError: true });
+    return res.status(422).json({ errors });
+  }
+  try {
+    const { title, tags, text } = req.body;
+
+    const discussion = req.thread;
+    discussion.title = title;
+    discussion.tags = tags;
+    discussion.text = text;
+    discussion.save();
+    res.status(201).json(discussion);
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.showDiscussion = async (req, res, next) => {
   try {
     const { id } = req.thread;

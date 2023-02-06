@@ -15,7 +15,8 @@ const {
   listQuestions,
   listQuestionsByTags,
   listQuestionsByUser,
-  removeQuestion
+  removeQuestion,
+  editQuestion
 } = require('./controllers/questions');
 const {
   loadDiscussion,
@@ -25,7 +26,8 @@ const {
   listDiscussions,
   listDiscussionsByTags,
   listDiscussionsByUser,
-  removeDiscussion
+  removeDiscussion,
+  editDiscussion
 } = require('./controllers/discussions');
 const {
   loadFaq,
@@ -74,6 +76,7 @@ router.get('/question/:question', showQuestion);
 router.get('/questions', listQuestions);
 router.get('/questions/:tags', listQuestionsByTags);
 router.get('/questions/user/:username', listQuestionsByUser);
+router.post('/question/:question', [requireAuth, questionValidate, questionAuth], editQuestion);
 router.delete('/question/:question', [requireAuth, questionAuth], removeQuestion);
 
 //discussions
@@ -83,6 +86,7 @@ router.get('/discussion/:discussion', showDiscussion);
 router.get('/discussions', listDiscussions);
 router.get('/discussions/:tags', listDiscussionsByTags);
 router.get('/discussions/user/:username', listDiscussionsByUser);
+router.post('/discussion/:discussion', [requireAuth, discussionValidate, discussionAuth], editDiscussion);
 router.delete('/discussion/:discussion', [requireAuth, discussionAuth], removeDiscussion);
 
 //faq
@@ -105,7 +109,7 @@ router.delete('/:thread/:threadId', [requireAuth, threadAuth], removeThread);
 //answers
 router.param('answer', loadAnswer);
 router.post('/answer/:thread/:threadId', [requireAuth, answerValidate, answerPostAuth], createAnswer);
-router.post('/answer/:thread/:threadId/:answer/edit', [requireAuth, answerValidate, answerPostAuth, answerEditAuth], editAnswer);
+router.post('/answer/:thread/:threadId/:answer', [requireAuth, answerValidate, answerPostAuth, answerEditAuth], editAnswer);
 router.delete('/answer/:thread/:threadId/:answer', [requireAuth, answerDeleteAuth], removeAnswer);
 
 //votes

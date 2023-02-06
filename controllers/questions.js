@@ -36,6 +36,26 @@ exports.createQuestion = async (req, res, next) => {
   }
 };
 
+exports.editQuestion = async (req, res, next) => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    const errors = result.array({ onlyFirstError: true });
+    return res.status(422).json({ errors });
+  }
+  try {
+    const { title, tags, text } = req.body;
+
+    const question = req.thread;
+    question.title = title;
+    question.tags = tags;
+    question.text = text;
+    question.save();
+    res.status(201).json(question);
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.showQuestion = async (req, res, next) => {
   try {
     const { id } = req.thread;
