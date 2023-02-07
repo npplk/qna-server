@@ -124,7 +124,7 @@ exports.authenticate = async (req, res) => {
 exports.listUsers = async (req, res, next) => {
   try {
     const { sortType = '-created' } = req.body;
-    const users = await User.find().sort(sortType);
+    const users = await User.find({ role: { $eq: 'user' }}).sort(sortType);
     res.json(users);
   } catch (error) {
     next(error);
@@ -133,7 +133,10 @@ exports.listUsers = async (req, res, next) => {
 
 exports.search = async (req, res, next) => {
   try {
-    const users = await User.find({ username: { $regex: req.params.search, $options: 'i' } });
+    const users = await User.find({ 
+      displayname: { $regex: req.params.search, $options: 'i' }, 
+      role: { $eq: 'user' }
+    });
     res.json(users);
   } catch (error) {
     next(error);
@@ -142,7 +145,10 @@ exports.search = async (req, res, next) => {
 
 exports.find = async (req, res, next) => {
   try {
-    const users = await User.findOne({ username: req.params.username });
+    const users = await User.findOne({ 
+      username: req.params.username,
+      role: { $eq: 'user' } 
+    });
     res.json(users);
   } catch (error) {
     next(error);
